@@ -1,2 +1,4 @@
-package com.g5.customer.domain.model;public class Customer {
+package com.g5.customer.domain.model;
+
+public class Customer {
 }

@@ -1,0 +1,17 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql_g5_tech_challenge_4
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: g5_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+        - "3306:3306"
+    volumes:
+        - db_data:/var/lib/mysql
+
+volumes:
+    db_data:
+
