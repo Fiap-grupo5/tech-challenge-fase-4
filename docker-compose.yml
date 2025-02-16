@@ -7,7 +7,7 @@ services:
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: order_db
+      MYSQL_DATABASE: fase_4
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
@@ -49,7 +49,7 @@ services:
       - order-network
 
   # Microsserviço de Logística de Entrega
-  delivery-service:
+  logistics-service:
     build: ./LogisticsService
     container_name: logistics-service
     ports:
