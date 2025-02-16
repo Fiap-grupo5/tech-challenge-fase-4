@@ -1,17 +1,64 @@
+version: "3.8"
+
 services:
-  db:
-    image: mysql:latest
-    container_name: mysql_g5_tech_challenge_4
+  # Banco de dados MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: g5_db
+      MYSQL_DATABASE: order_db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
-        - "3306:3306"
-    volumes:
-        - db_data:/var/lib/mysql
+      - "3306:3306"
+    networks:
+      - order-network
 
-volumes:
-    db_data:
+  # Microsserviço de Gerenciamento de Clientes
+  customer-service:
+    build: ./CustomerService
+    container_name: customer-service
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+    networks:
+      - order-network
 
+  # Microsserviço de Catálogo de Produtos
+  product-service:
+    build: ./ProductService
+    container_name: product-service
+    ports:
+      - "8082:8080"
+    depends_on:
+      - mysql
+    networks:
+      - order-network
+
+  # Microsserviço de Gestão de Pedidos
+  order-service:
+    build: ./OrderService
+    container_name: order-service
+    ports:
+      - "8083:8080"
+    depends_on:
+      - mysql
+    networks:
+      - order-network
+
+  # Microsserviço de Logística de Entrega
+  delivery-service:
+    build: ./LogisticsService
+    container_name: logistics-service
+    ports:
+      - "8084:8080"
+    depends_on:
+      - mysql
+    networks:
+      - order-network
+
+networks:
+  order-network:
+    driver: bridge
