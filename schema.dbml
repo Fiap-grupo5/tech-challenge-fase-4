@@ -4,20 +4,13 @@ Table Customer {
   email varchar
   phone varchar
   address varchar
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
 }
 
 Table Order {
   id int [pk, increment]
   customer_id int [ref: > Customer.id]
-  order_item int [ref: < Order_Item.id]
   status varchar [note: 'pending, success, canceled']
   total decimal
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
 }
 
 Table Product {
@@ -35,20 +28,15 @@ Table Product {
 Table Order_Item {
   id int [pk, increment]
   product_id int [ref: > Product.id]
+  order_id int [ref: > Order.id]
   quantity int
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
 }
 
 Table Logistics {
   id int [pk, increment]
   order_id int [ref: - Order.id]
   delivery varchar
-  status varchar
+  status varchar [note: 'pending, in_transit, delivered, canceled']
   estimated_date datetime
   delivery_date datetime
-  created_at datetime
-  updated_at datetime
-  deleted_at datetime
 }
