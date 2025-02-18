@@ -1,4 +1,4 @@
-CREATE TABLE `ms_produto`.`customer` (
+CREATE TABLE `ms_customer`.`customer` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(150) NOT NULL,
   `email` VARCHAR(150) NOT NULL,

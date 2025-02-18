@@ -1,4 +1,4 @@
-INSERT INTO `ms_produto`.`customer` (`name`, `email`, `phone`, `postcode`, `number`) 
+INSERT INTO `ms_customer`.`customer` (`name`, `email`, `phone`, `postcode`, `number`) 
 VALUES 
 ('João Silva', 'joao.silva@email.com', '11987654321', '01001-000', 123),
 ('Maria Oliveira', 'maria.oliveira@email.com', '21987654321', '20040-010', 456),
