@@ -7,6 +7,8 @@ services:
       MYSQL_DATABASE: fase4
     ports:
       - "3306:3306"
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
     networks:
       - tech-network
     healthcheck:

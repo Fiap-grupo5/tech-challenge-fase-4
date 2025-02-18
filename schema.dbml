@@ -22,7 +22,6 @@ Table Product {
   category varchar
   created_at datetime
   updated_at datetime
-  deleted_at datetime
 }
 
 Table Order_Item {
