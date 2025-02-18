@@ -1,9 +1,9 @@
-package com.fiap.g5.mscustomer.domain;
+package com.fiap.g5.mscustomer.customer.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class Customer {
     private Long id;
@@ -11,5 +11,5 @@ public class Customer {
     private String email;
     private String phone;
     private String postcode;
-    private Integer number;
+    private Long number;
 }

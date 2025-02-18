@@ -1,4 +1,4 @@
-package com.fiap.g5.mscustomer.gateway.database.jpa.entity;
+package com.fiap.g5.mscustomer.customer.gateway.database.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,22 +7,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "customer")
-@Data
 @Builder
-@AllArgsConstructor
+@Getter
+@Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "customer")
 public class CustomerEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String name;
-	private String email;
-	private String postcode;
-    private Integer number;
+    private String email;
+    private String phone;
+    private String postcode;
+    private Long number;
 }
