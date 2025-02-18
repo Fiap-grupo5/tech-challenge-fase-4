@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.fiap.g5.mscustomer.customer.domain.CreateCustomer;
+import com.fiap.g5.mscustomer.customer.domain.CustomerDTO;
 import com.fiap.g5.mscustomer.customer.domain.Customer;
 import com.fiap.g5.mscustomer.customer.exception.AcessoRepositorioDadosException;
 import com.fiap.g5.mscustomer.customer.gateway.CustomerGateway;
@@ -38,7 +38,7 @@ public class CustomerRepositoryGateway implements CustomerGateway {
     }
 
     @Override
-    public Customer create(CreateCustomer customer) {
+    public Customer create(CustomerDTO customer) {
         try {
             CustomerEntity newCustomerEntity = CustomerEntity
                 .builder()
@@ -77,6 +77,23 @@ public class CustomerRepositoryGateway implements CustomerGateway {
     public void delete(Long id) {
         try {
             customerRepository.deleteById(id);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new AcessoRepositorioDadosException();
+        }
+    }
+
+    @Override
+    public Customer update(CustomerDTO customer, Long id) {
+        try {
+            CustomerEntity customerEntity = customerRepository.findById(id).orElseThrow();
+            customerEntity.setName(customer.getName());
+            customerEntity.setEmail(customer.getEmail());
+            customerEntity.setPhone(customer.getPhone());
+            customerEntity.setPostcode(customer.getPostcode());
+            customerEntity.setNumber(customer.getNumber());
+            CustomerEntity updatedCustomerEntity = customerRepository.save(customerEntity);
+            return new Customer(updatedCustomerEntity.getId(), updatedCustomerEntity.getName(), updatedCustomerEntity.getEmail(), updatedCustomerEntity.getPhone(), updatedCustomerEntity.getPostcode(), updatedCustomerEntity.getNumber());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new AcessoRepositorioDadosException();

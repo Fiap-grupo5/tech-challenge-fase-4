@@ -7,7 +7,7 @@ import lombok.ToString;
 @Data
 @ToString
 @AllArgsConstructor
-public class CreateCustomer {
+public class CustomerDTO {
     private String name;
     private String email;
     private String phone;

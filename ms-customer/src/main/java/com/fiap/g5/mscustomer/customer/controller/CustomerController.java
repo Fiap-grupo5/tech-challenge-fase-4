@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fiap.g5.mscustomer.customer.controller.json.CustomerJson;
-import com.fiap.g5.mscustomer.customer.domain.CreateCustomer;
+import com.fiap.g5.mscustomer.customer.domain.CustomerDTO;
 import com.fiap.g5.mscustomer.customer.domain.Customer;
 import com.fiap.g5.mscustomer.customer.usecase.CreateCustomerUseCase;
 import com.fiap.g5.mscustomer.customer.usecase.DeleteCustomerUseCase;
 import com.fiap.g5.mscustomer.customer.usecase.FindAllCustomerUseCase;
 import com.fiap.g5.mscustomer.customer.usecase.FindCustomerUseCase;
+import com.fiap.g5.mscustomer.customer.usecase.UpdateCustomerUseCase;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @Slf4j
 @CrossOrigin(origins = "*") //NOSONAR
@@ -34,6 +37,7 @@ public class CustomerController {
     private CreateCustomerUseCase createCustomerUseCase;
     private FindAllCustomerUseCase findAllCustomerUseCase;
     private DeleteCustomerUseCase deleteCustomerUseCase;
+    private UpdateCustomerUseCase updateCustomerUseCase;
 
     @GetMapping("/")
     public List<CustomerJson> findAllCustomers() {
@@ -49,7 +53,7 @@ public class CustomerController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerJson createCustomer(@RequestBody(required = true) CreateCustomer createCustomer) {
+    public CustomerJson createCustomer(@RequestBody(required = true) CustomerDTO createCustomer) {
         Customer customer = createCustomerUseCase.create(createCustomer);
         return new CustomerJson(customer);
     }
@@ -58,5 +62,12 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCustomer(@PathVariable("id") Long id) {
         deleteCustomerUseCase.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomerJson updateCustomer(@PathVariable("id") Long id, @RequestBody CustomerDTO customerUpdate) {
+        Customer customer = updateCustomerUseCase.update(customerUpdate, id);
+        return new CustomerJson(customer);
     }
 }
