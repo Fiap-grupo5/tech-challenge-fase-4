@@ -1,5 +1,6 @@
 package com.fiap.g5.mscustomer.customer.gateway.database;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -49,6 +50,33 @@ public class CustomerRepositoryGateway implements CustomerGateway {
                 .build();
             CustomerEntity customerEntity = customerRepository.save(newCustomerEntity);
             return new Customer(customerEntity.getId(), customerEntity.getName(), customerEntity.getEmail(), customerEntity.getPhone(), customerEntity.getPostcode(), customerEntity.getNumber());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new AcessoRepositorioDadosException();
+        }
+    }
+
+    @Override
+    public List<Customer> findAll() {
+        try {
+            List<CustomerEntity> customerEntities = customerRepository.findAll();
+            return customerEntities.stream().map(customerEntity -> new Customer(
+                customerEntity.getId(),
+                customerEntity.getName(),
+                customerEntity.getEmail(),
+                customerEntity.getPhone(),
+                customerEntity.getPostcode(),
+                customerEntity.getNumber())).toList();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new AcessoRepositorioDadosException();
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        try {
+            customerRepository.deleteById(id);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new AcessoRepositorioDadosException();
