@@ -1,0 +1,71 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fase4
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    networks:
+      - tech-network
+
+  ms-customer:
+    build: ./ms-customer
+    container_name: ms-customer
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+    networks:
+      - tech-network
+
+  ms-product:
+    build: ./ms-product
+    container_name: ms-product
+    ports:
+      - "8082:8080"
+    depends_on:
+      - mysql
+    networks:
+      - tech-network
+
+  ms-order:
+    build: ./ms-order
+    container_name: ms-order
+    ports:
+      - "8083:8080"
+    depends_on:
+      - mysql
+    networks:
+      - tech-network
+
+  ms-logistic:
+    build: ./ms-logistic
+    container_name: ms-logistic
+    ports:
+      - "8084:8080"
+    depends_on:
+      - mysql
+    networks:
+      - tech-network
+
+  ms-gateway:
+    build: ./ms-gateway
+    container_name: ms-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ms-customer
+      - ms-product
+      - ms-order
+      - ms-logistic
+    networks:
+      - tech-network
+
+networks:
+  tech-network:
+    driver: bridge
