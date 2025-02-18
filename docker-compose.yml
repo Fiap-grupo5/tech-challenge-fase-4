@@ -2,16 +2,18 @@ version: "3.8"
 services:
   mysql:
     image: mysql:8.0
-    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: fase4
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
     ports:
       - "3306:3306"
     networks:
       - tech-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   ms-customer:
     build: ./ms-customer
@@ -19,7 +21,8 @@ services:
     ports:
       - "8081:8080"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - tech-network
 
@@ -29,7 +32,8 @@ services:
     ports:
       - "8082:8080"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - tech-network
 
@@ -39,7 +43,8 @@ services:
     ports:
       - "8083:8080"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - tech-network
 
@@ -49,7 +54,8 @@ services:
     ports:
       - "8084:8080"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - tech-network
 
@@ -59,10 +65,14 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - ms-customer
-      - ms-product
-      - ms-order
-      - ms-logistic
+      ms-customer:
+        condition: service_started
+      ms-product:
+        condition: service_started
+      ms-order:
+        condition: service_started
+      ms-logistic:
+        condition: service_started
     networks:
       - tech-network
 
