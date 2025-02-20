@@ -60,6 +60,13 @@ services:
     networks:
       - tech-network
 
+  ms-discovery:
+    build: ./ms-discovery
+    container_name: ms-discovery
+    ports:
+      - "8761:8761"
+    networks:
+      - tech-network
   ms-gateway:
     build: ./ms-gateway
     container_name: ms-gateway
