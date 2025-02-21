@@ -4,7 +4,6 @@ import com.fiap.g5.msproduct.domain.Product;
 import com.fiap.g5.msproduct.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +22,6 @@ public class ProductService {
     }
 
     public Product create(Product product) {
-        product.setCreatedAt(LocalDateTime.now());
-        product.setUpdatedAt(LocalDateTime.now());
         return productRepository.save(product);
     }
 
@@ -34,9 +31,7 @@ public class ProductService {
             product.setDescription(updatedProduct.getDescription());
             product.setPrice(updatedProduct.getPrice());
             product.setStock(updatedProduct.getStock());
-            product.setCategory(updatedProduct.getCategory());
-            
-            product.setUpdatedAt(LocalDateTime.now());
+
             return productRepository.save(product);
         }).orElseThrow(() -> new RuntimeException("Product not found"));
     }
