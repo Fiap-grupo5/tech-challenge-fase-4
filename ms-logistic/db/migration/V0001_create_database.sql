@@ -4,7 +4,7 @@ CREATE TABLE `ms_logistic`.`logistic` (
   `number` INT NOT NULL,
   `order_id` INT NOT NULL,
   `status` VARCHAR(150) NOT NULL,
-  `delivery` VARCHAR(150) NOT NULL,
+  `delivery` VARCHAR(150) NULL,
   `estimated_date` DATETIME(6) NOT NULL,
   `delivery_date` DATETIME(6) NULL,
   PRIMARY KEY (`id`)
