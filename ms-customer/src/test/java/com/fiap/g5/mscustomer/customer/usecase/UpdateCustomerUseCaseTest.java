@@ -30,7 +30,12 @@ class UpdateCustomerUseCaseTest {
     void shouldUpdateCustomerSuccessfully() {
         Long id = 1L;
         CustomerDTO customerDTO = new CustomerDTO("Mikasa Ackerman", "mikasa@example.com", "987654321", "snk2", 123L);
-        Customer updatedCustomer = new Customer(id, customerDTO.getName(), customerDTO.getEmail(), customerDTO.getPhone(), customerDTO.getPostcode(), customerDTO.getNumber());
+        Customer updatedCustomer = new Customer();
+        updatedCustomer.setName("Mikasa Ackerman");
+        updatedCustomer.setEmail("mikasa@example.com");
+        updatedCustomer.setPhone("987654321");
+        updatedCustomer.setPostcode("snk2");
+        updatedCustomer.setNumber(123L);
 
         when(customerGateway.update(customerDTO, id)).thenReturn(updatedCustomer);
 
@@ -45,4 +50,5 @@ class UpdateCustomerUseCaseTest {
 
         verify(customerGateway, times(1)).update(customerDTO, id);
     }
+
 }

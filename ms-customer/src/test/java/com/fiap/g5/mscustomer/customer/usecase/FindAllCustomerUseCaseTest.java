@@ -30,8 +30,12 @@ class FindAllCustomerUseCaseTest {
 
     @Test
     void shouldReturnAllCustomers() {
-        Customer customer1 = new Customer(1L, "Itadori Yuji", "Itadori@example.com", "123456789", "Jujutsu", 2022L);
-        Customer customer2 = new Customer(2L, "Sirius Black", "sirius@example.com", "987654321", "HarryPotter", 2023L);
+        Customer customer1 = new Customer();
+        customer1.setName("Itadori Yuji");
+
+        Customer customer2 = new Customer();
+        customer2.setName("Sirius Black");
+
         List<Customer> customers = Arrays.asList(customer1, customer2);
 
         when(customerGateway.findAll()).thenReturn(customers);
@@ -43,4 +47,5 @@ class FindAllCustomerUseCaseTest {
         assertEquals("Sirius Black", result.get(1).getName());
         verify(customerGateway, times(1)).findAll();
     }
+
 }

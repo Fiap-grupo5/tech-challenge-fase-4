@@ -29,7 +29,7 @@ class CreateCustomerUseCaseTest {
     @BeforeEach
     void setup() {
         customerDTO = new CustomerDTO("Levi Ackerman", "levi@example.com", "123456789", "Rua SNK", 123L);
-        customer = new Customer(1L, customerDTO.getName(), customerDTO.getEmail(), customerDTO.getPhone(), customerDTO.getPostcode(), customerDTO.getNumber());;
+        customer = new Customer();;
     }
 
     @Test

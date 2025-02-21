@@ -55,8 +55,10 @@ class CustomerControllerTest {
 
     @Test
     void shouldReturnAllCustomers() throws Exception {
-        Customer customer = new Customer(1L, "Filipe Luis", "Filipinho@example.com", "123456789", "Rua ErreJota",  2019L);
+        Customer customer = new Customer();
+        customer.setName("Filipe Luis");
         when(findAllCustomerUseCase.findAll()).thenReturn(List.of(customer));
+
 
         mockMvc.perform(get("/customer/"))
                 .andExpect(status().isOk())
@@ -67,8 +69,10 @@ class CustomerControllerTest {
     @Test
     void shouldReturnCustomerById() throws Exception {
         Long id = 1L;
-        Customer customer = new Customer(id, "Arrascaeta", "arrasca@example.com", "123456789", "Rua RJ", 2020L);
+        Customer customer = new Customer();
+        customer.setName("Arrascaeta");
         when(findCustomerUseCase.findById(id)).thenReturn(customer);
+
 
         mockMvc.perform(get("/customer/{id}", id))
                 .andExpect(status().isOk())
@@ -78,7 +82,9 @@ class CustomerControllerTest {
     @Test
     void shouldCreateCustomer() throws Exception {
         CustomerDTO customerDTO = new CustomerDTO("Everton Ribeiro", "er7@example.com", "123456789", "Rua RJ", 2024L);
-        Customer customer = new Customer(2L, customerDTO.getName(), customerDTO.getEmail(), customerDTO.getPhone(), customerDTO.getPostcode(), customerDTO.getNumber());
+
+        Customer customer = new Customer();
+        customer.setName("Everton Ribeiro");
 
         when(createCustomerUseCase.create(any(CustomerDTO.class))).thenReturn(customer);
 
@@ -89,11 +95,15 @@ class CustomerControllerTest {
                 .andExpect(jsonPath("$.name").value("Everton Ribeiro"));
     }
 
+
     @Test
     void shouldUpdateCustomer() throws Exception {
         Long id = 1L;
+
         CustomerDTO customerDTO = new CustomerDTO("Everton Update", "updated@example.com", "987654321", "Rua BA", 2025L);
-        Customer updatedCustomer = new Customer(id, customerDTO.getName(), customerDTO.getEmail(), customerDTO.getPhone(), customerDTO.getPostcode(), customerDTO.getNumber());
+
+        Customer updatedCustomer = new Customer();
+        updatedCustomer.setName("Everton Update");
 
         when(updateCustomerUseCase.update(any(CustomerDTO.class), eq(id))).thenReturn(updatedCustomer);
 
@@ -103,6 +113,7 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Everton Update"));
     }
+
 
     @Test
     void shouldDeleteCustomer() throws Exception {

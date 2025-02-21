@@ -52,12 +52,6 @@ class CustomerRepositoryGatewayTest {
         );
 
         customer = new Customer(
-                1L,
-                "Sirius Black",
-                "Sirius@example.com",
-                "11889999999",
-                "02000-000",
-                123L
         );
     }
 

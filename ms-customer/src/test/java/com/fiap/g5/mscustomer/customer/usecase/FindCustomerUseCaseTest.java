@@ -30,12 +30,6 @@ class FindCustomerUseCaseTest {
         MockitoAnnotations.openMocks(this);
 
         customer = new Customer(
-                1L,
-                "Levi Ackerman",
-                "levi@example.com",
-                "11999999999",
-                "01000-000",
-                123L
         );
     }
 
