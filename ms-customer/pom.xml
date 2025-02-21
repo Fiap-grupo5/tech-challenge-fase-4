@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>com.fiap.g5</groupId>
-    <artifactId>ms-customer</artifactId>
+    <artifactId>ms-product</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ms-customer</name>
-    <description>ms-customer</description>
+    <name>ms-product</name>
+    <description>ms-product</description>
     <url/>
     <licenses>
         <license/>
