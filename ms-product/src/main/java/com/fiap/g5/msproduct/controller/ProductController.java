@@ -1,67 +1,77 @@
 package com.fiap.g5.msproduct.controller;
 
+import com.fiap.g5.msproduct.controller.json.ProductJson;
 import com.fiap.g5.msproduct.domain.Product;
-import com.fiap.g5.msproduct.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fiap.g5.msproduct.usecase.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@RequiredArgsConstructor
 public class ProductController {
-    
-    @Autowired
-    private ProductService productService;
+
+    private final FindAllProductsUseCase findAllProductsUseCase;
+    private final FindProductByIdUseCase findProductByIdUseCase;
+    private final CreateProductUseCase createProductUseCase;
+    private final UpdateProductUseCase updateProductUseCase;
+    private final DeleteProductUseCase deleteProductUseCase;
+    private final IncrementStockUseCase incrementStockUseCase;
+    private final DecrementStockUseCase decrementStockUseCase;
 
     @GetMapping
-    public List<Product> listAll() {
-        return productService.findAll();
+    public List<ProductJson> listAll() {
+        return findAllProductsUseCase.execute()
+                .stream()
+                .map(ProductJson::new)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getById(@PathVariable Long id) {
-        return productService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<ProductJson> getById(@PathVariable Long id) {
+        Product product = findProductByIdUseCase.execute(id);
+        return ResponseEntity.ok(new ProductJson(product));
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody Product product) {
-        Product created = productService.create(product);
-        return ResponseEntity.ok(created);
+    public ResponseEntity<ProductJson> create(@RequestBody Product product) {
+        Product created = createProductUseCase.execute(product);
+        return ResponseEntity.ok(new ProductJson(created));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(
+    public ResponseEntity<ProductJson> update(
             @PathVariable Long id,
             @RequestBody Product product
     ) {
-        Product updated = productService.update(id, product);
-        return ResponseEntity.ok(updated);
+        Product updated = updateProductUseCase.execute(id, product);
+        return ResponseEntity.ok(new ProductJson(updated));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        productService.delete(id);
+        deleteProductUseCase.execute(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/stock/increment")
-    public ResponseEntity<Product> incrementStock(
+    public ResponseEntity<ProductJson> incrementStock(
             @PathVariable Long id,
             @RequestParam("quantity") int quantity
     ) {
-        Product updated = productService.incrementStock(id, quantity);
-        return ResponseEntity.ok(updated);
+        Product updated = incrementStockUseCase.execute(id, quantity);
+        return ResponseEntity.ok(new ProductJson(updated));
     }
 
     @PatchMapping("/{id}/stock/decrement")
-    public ResponseEntity<Product> decrementStock(
+    public ResponseEntity<ProductJson> decrementStock(
             @PathVariable Long id,
             @RequestParam("quantity") int quantity
     ) {
-        Product updated = productService.decrementStock(id, quantity);
-        return ResponseEntity.ok(updated);
+        Product updated = decrementStockUseCase.execute(id, quantity);
+        return ResponseEntity.ok(new ProductJson(updated));
     }
 }

@@ -1,7 +1,7 @@
-package com.fiap.g5.msproduct.config;
+package com.fiap.g5.msproduct.config.batch;
 
 import com.fiap.g5.msproduct.domain.Product;
-import com.fiap.g5.msproduct.repository.ProductRepository;
+import com.fiap.g5.msproduct.gateway.ProductGateway;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -34,10 +34,8 @@ public class BatchConfig {
             @Value("#{jobParameters['file.path']}") String filePath
     ) {
         FlatFileItemReader<Product> reader = new FlatFileItemReader<>();
-
         Resource resource = new FileSystemResource(filePath);
         reader.setResource(resource);
-
         reader.setLinesToSkip(1);
 
         DefaultLineMapper<Product> lineMapper = new DefaultLineMapper<>();
@@ -51,7 +49,6 @@ public class BatchConfig {
         lineMapper.setFieldSetMapper(fieldSetMapper);
 
         reader.setLineMapper(lineMapper);
-
         return reader;
     }
 
@@ -62,14 +59,14 @@ public class BatchConfig {
                 product.setCreatedAt(LocalDateTime.now());
             }
             product.setUpdatedAt(LocalDateTime.now());
-
             return product;
         };
     }
 
     @Bean
-    public ItemWriter<Product> productItemWriter(ProductRepository productRepository) {
-        return items -> productRepository.saveAll(items);
+    public ItemWriter<Product> productItemWriter(ProductGateway productGateway) {
+        // Para cada produto lido, utiliza o gateway para criar o registro (o gateway fará a conversão e persistência)
+        return items -> items.forEach(productGateway::create);
     }
 
     @Bean
@@ -97,5 +94,4 @@ public class BatchConfig {
                 .start(importProductStep)
                 .build();
     }
-
 }

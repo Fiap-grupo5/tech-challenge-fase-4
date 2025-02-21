@@ -1,24 +1,21 @@
 package com.fiap.g5.msproduct.domain;
 
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "products")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
+@ToString
 public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String description;
     private String category;
@@ -27,23 +24,23 @@ public class Product {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public void incrementStock(int quantity) {
-        if (this.stock == null) {
-            this.stock = 0;
+    public Product incrementStock(int quantity) {
+        if (stock == null) {
+            stock = 0;
         }
-        this.stock += quantity;
-        this.updatedAt = LocalDateTime.now();
+        stock += quantity;
+        return this;
     }
 
-    public void decrementStock(int quantity) {
-        if (this.stock == null) {
-            this.stock = 0;
+    public Product decrementStock(int quantity) {
+        if (stock == null) {
+            stock = 0;
         }
-        int newStock = this.stock - quantity;
+        int newStock = stock - quantity;
         if (newStock < 0) {
             throw new IllegalArgumentException("Stock cannot be negative");
         }
-        this.stock = newStock;
-        this.updatedAt = LocalDateTime.now();
+        stock = newStock;
+        return this;
     }
 }
