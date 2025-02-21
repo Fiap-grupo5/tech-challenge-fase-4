@@ -13,6 +13,8 @@ import com.fiap.g5.mscustomer.customer.domain.Customer;
 import com.fiap.g5.mscustomer.customer.exception.CustomerNaoEncontradoException;
 import com.fiap.g5.mscustomer.customer.gateway.CustomerGateway;
 
+import java.util.Optional;
+
 class FindCustomerUseCaseTest {
 
     @Mock
@@ -33,7 +35,7 @@ class FindCustomerUseCaseTest {
                 "levi@example.com",
                 "11999999999",
                 "01000-000",
-                "123"
+                123L
         );
     }
 

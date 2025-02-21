@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,12 +13,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fiap.g5.mscustomer.customer.controller.json.CustomerJson;
 import com.fiap.g5.mscustomer.customer.domain.Customer;
 import com.fiap.g5.mscustomer.customer.domain.CustomerDTO;
 import com.fiap.g5.mscustomer.customer.usecase.*;
@@ -30,19 +29,19 @@ class CustomerControllerTest {
 
     private MockMvc mockMvc;
 
-    @Mock
+    @MockBean
     private FindCustomerUseCase findCustomerUseCase;
 
-    @Mock
+    @MockBean
     private CreateCustomerUseCase createCustomerUseCase;
 
-    @Mock
+    @MockBean
     private FindAllCustomerUseCase findAllCustomerUseCase;
 
-    @Mock
+    @MockBean
     private DeleteCustomerUseCase deleteCustomerUseCase;
 
-    @Mock
+    @MockBean
     private UpdateCustomerUseCase updateCustomerUseCase;
 
     @InjectMocks
@@ -57,7 +56,7 @@ class CustomerControllerTest {
 
     @Test
     void shouldReturnAllCustomers() throws Exception {
-        Customer customer = new Customer(UUID.randomUUID(), "Filipe Luis", "Filipinho@example.com", "123456789", "Rua ErreJota, 2019");
+        Customer customer = new Customer(1L, "Filipe Luis", "Filipinho@example.com", "123456789", "Rua ErreJota",  2019L);
         when(findAllCustomerUseCase.findAll()).thenReturn(List.of(customer));
 
         mockMvc.perform(get("/customer/"))
@@ -68,8 +67,8 @@ class CustomerControllerTest {
 
     @Test
     void shouldReturnCustomerById() throws Exception {
-        UUID id = UUID.randomUUID();
-        Customer customer = new Customer(id, "Arrascaeta", "arrasca@example.com", "123456789", "Rua RJ, 123");
+        Long id = 1L;
+        Customer customer = new Customer(id, "Arrascaeta", "arrasca@example.com", "123456789", "Rua RJ", 2020L);
         when(findCustomerUseCase.findById(id)).thenReturn(customer);
 
         mockMvc.perform(get("/customer/{id}", id))
@@ -79,8 +78,8 @@ class CustomerControllerTest {
 
     @Test
     void shouldCreateCustomer() throws Exception {
-        CustomerDTO customerDTO = new CustomerDTO("Everton Ribeiro", "er7@example.com", "123456789", "Rua RJ, 2024");
-        Customer customer = new Customer(UUID.randomUUID(), customerDTO.getName(), customerDTO.getEmail(), customerDTO.getPhone(), customerDTO.getAddress());
+        CustomerDTO customerDTO = new CustomerDTO("Everton Ribeiro", "er7@example.com", "123456789", "Rua RJ", 2024L);
+        Customer customer = new Customer(2L, customerDTO.getName(), customerDTO.getEmail(), customerDTO.getPhone(), customerDTO.getPostcode(), customerDTO.getNumber());
 
         when(createCustomerUseCase.create(any(CustomerDTO.class))).thenReturn(customer);
 
@@ -93,9 +92,9 @@ class CustomerControllerTest {
 
     @Test
     void shouldUpdateCustomer() throws Exception {
-        UUID id = UUID.randomUUID();''
-        CustomerDTO customerDTO = new CustomerDTO("Everton Update", "updated@example.com", "987654321", "Rua BA, 2025");
-        Customer updatedCustomer = new Customer(id, customerDTO.getName(), customerDTO.getEmail(), customerDTO.getPhone(), customerDTO.getAddress());
+        Long id = 1L;
+        CustomerDTO customerDTO = new CustomerDTO("Everton Update", "updated@example.com", "987654321", "Rua BA", 2025L);
+        Customer updatedCustomer = new Customer(id, customerDTO.getName(), customerDTO.getEmail(), customerDTO.getPhone(), customerDTO.getPostcode(), customerDTO.getNumber());
 
         when(updateCustomerUseCase.update(any(CustomerDTO.class), eq(id))).thenReturn(updatedCustomer);
 
@@ -108,7 +107,7 @@ class CustomerControllerTest {
 
     @Test
     void shouldDeleteCustomer() throws Exception {
-        UUID id = UUID.randomUUID();
+        Long id = 1L;
         doNothing().when(deleteCustomerUseCase).delete(id);
 
         mockMvc.perform(delete("/customer/{id}", id))

@@ -36,28 +36,28 @@ class CustomerRepositoryGatewayTest {
 
         customerEntity = CustomerEntity.builder()
                 .id(1L)
-                .name("Mikasa Ackerman")
-                .email("mikasa@example.com")
-                .phone("11999999999")
-                .postcode("01000-000")
-                .number("123")
+                .name("Sirius Black")
+                .email("Sirius@example.com")
+                .phone("11889999999")
+                .postcode("02000-000")
+                .number(123L)
                 .build();
 
         customerDTO = new CustomerDTO(
-                "Itadori Yuji",
-                "Itadori@example.com",
+                "Sirius Black",
+                "Sirius@example.com",
                 "11889999999",
                 "02000-000",
-                "123"
+                123L
         );
 
         customer = new Customer(
                 1L,
                 "Sirius Black",
                 "Sirius@example.com",
-                "11999999999",
-                "03000-000",
-                "123"
+                "11889999999",
+                "02000-000",
+                123L
         );
     }
 
