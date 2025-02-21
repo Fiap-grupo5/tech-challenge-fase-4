@@ -13,4 +13,5 @@ public interface LogisticGateway {
     Logistic updateDeliveryDate(Long id, LocalDateTime deliveryDate);
     Logistic updateDelivery(Long id, String delivery);
     List<Logistic> findAll();
+    List<Logistic> findTaskPayload();
 }

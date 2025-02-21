@@ -1,5 +1,6 @@
 package com.fiap.g5.mslogistic.logistic.gateway.database;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -84,6 +85,14 @@ public class LogisticRepositoryGateway implements LogisticGateway {
         var logisticEntities = logisticRepository.findAll();
         return logisticEntities.stream().map(this::toDomain).toList();
     }
+    
+    @Override
+    public List<Logistic> findTaskPayload() {
+        LocalDateTime startOfYesterday = LocalDate.now().minusDays(1).atStartOfDay();
+        LocalDateTime endOfYesterday = startOfYesterday.plusDays(1).minusNanos(1);
+        var logisticEntities = logisticRepository.findLogisticsFromPeriodAndStatus(startOfYesterday, endOfYesterday, LogisticStatus.PENDING.getStatus());
+        return logisticEntities.stream().map(this::toDomain).toList();
+    }
 
     private Logistic toDomain(LogisticEntity logisticEntity) {
         return new Logistic(
@@ -98,4 +107,5 @@ public class LogisticRepositoryGateway implements LogisticGateway {
             logisticEntity.getCreatedAt()
         );
     }
+
 }

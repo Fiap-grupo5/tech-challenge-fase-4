@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fiap.g5.mslogistic.logistic.domain.CreateLogistic;
 import com.fiap.g5.mslogistic.logistic.domain.Logistic;
 import com.fiap.g5.mslogistic.logistic.usecase.CreateLogisticUseCase;
+import com.fiap.g5.mslogistic.logistic.usecase.DailyTask;
 import com.fiap.g5.mslogistic.logistic.usecase.FindAllLogisticsUseCase;
 import com.fiap.g5.mslogistic.logistic.usecase.FindLogisticByIdUseCase;
 import com.fiap.g5.mslogistic.logistic.usecase.UpdateLogisticDelivery;
@@ -34,6 +35,7 @@ public class LogisticController {
     private FindLogisticByIdUseCase findLogisticByIdUseCase;
     private UpdateLogisticDelivery updateLogisticDelivery;
     private UpdateStatusLogisticUseCase updateStatusLogisticUseCase;
+    private DailyTask dailyTask;
     
     @PostMapping("/")
     public Logistic create(@RequestBody(required = true) CreateLogistic createLogistic) {
@@ -58,5 +60,10 @@ public class LogisticController {
     @PostMapping("/{id}/status/{status}")
     public Logistic updateStatus(@PathVariable("id") Long id, @PathVariable("status") String status) {
         return updateStatusLogisticUseCase.updateStatus(id, status);
+    }
+
+    @PostMapping("/task")
+    public void scheduleTask() {
+        dailyTask.executeDailyTask();
     }
 }
