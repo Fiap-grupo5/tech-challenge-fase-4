@@ -22,8 +22,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import java.time.LocalDateTime;
-
 @Configuration
 @EnableBatchProcessing
 public class BatchConfig {
@@ -43,7 +41,7 @@ public class BatchConfig {
         DefaultLineMapper<Product> lineMapper = new DefaultLineMapper<>();
 
         DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
-        tokenizer.setNames("name", "description", "category", "price", "stock");
+        tokenizer.setNames("name", "description", "price", "stock");
         lineMapper.setLineTokenizer(tokenizer);
 
         BeanWrapperFieldSetMapper<Product> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
@@ -58,11 +56,6 @@ public class BatchConfig {
     @Bean
     public ItemProcessor<Product, Product> productItemProcessor() {
         return product -> {
-            if (product.getCreatedAt() == null) {
-                product.setCreatedAt(LocalDateTime.now());
-            }
-            product.setUpdatedAt(LocalDateTime.now());
-
             return product;
         };
     }
