@@ -5,6 +5,7 @@ CREATE TABLE `ms_logistic`.`logistic` (
   `order_id` INT NOT NULL,
   `status` VARCHAR(150) NOT NULL,
   `delivery` VARCHAR(150) NULL,
+  `created_at` DATETIME(6) NOT NULL,
   `estimated_date` DATETIME(6) NOT NULL,
   `delivery_date` DATETIME(6) NULL,
   PRIMARY KEY (`id`)

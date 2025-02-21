@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.fiap.g5.mslogistic.logistic.gateway.api.json.OrderJson;
 
-@FeignClient(value = "MS-ORDER", path = "order")
+@FeignClient(value = "ms-order")
 public interface OrderFeignClient {
-    @GetMapping("/order/{id}")
+    @GetMapping("/order-service/order/{id}")
     OrderJson findById(@PathVariable(value = "id") Long id);
 
-    @PostMapping("/order/{id}/status/{status}")
+    @PostMapping("/order-service/order/{id}/status/{status}")
     OrderJson updateStatus(@PathVariable(value = "id") Long id, @PathVariable(value = "status") String status);
 }

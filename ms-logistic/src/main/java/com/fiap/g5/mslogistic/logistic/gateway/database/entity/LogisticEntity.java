@@ -41,4 +41,7 @@ public class LogisticEntity {
     
     @Column(name = "delivery_date", nullable = true)
     private LocalDateTime deliveryDate;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 }

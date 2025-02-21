@@ -1,4 +1,4 @@
-package com.fiap.g5.mslogistic.logistic.domain;
+package com.fiap.g5.msorder.order.domain;
 
 import java.time.LocalDateTime;
 

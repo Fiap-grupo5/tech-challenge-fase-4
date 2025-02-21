@@ -31,6 +31,7 @@ public class LogisticRepositoryGateway implements LogisticGateway {
             .orderId(createLogistic.getOrderId())
             .postcode(createLogistic.getPostcode())
             .number(createLogistic.getNumber())
+            .createdAt(LocalDateTime.now())
             .build();
         logisticRepository.save(logisticEntity);
         return toDomain(logisticEntity);
@@ -93,7 +94,8 @@ public class LogisticRepositoryGateway implements LogisticGateway {
             logisticEntity.getStatus(),
             logisticEntity.getDelivery(),
             logisticEntity.getEstimatedDate(),
-            logisticEntity.getDeliveryDate()
+            logisticEntity.getDeliveryDate(),
+            logisticEntity.getCreatedAt()
         );
     }
 }
