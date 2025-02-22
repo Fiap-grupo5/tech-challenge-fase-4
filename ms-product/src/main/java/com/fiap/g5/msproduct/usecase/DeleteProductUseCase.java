@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class DeleteProductUseCase {
-
     private final ProductGateway productGateway;
 
     public void execute(Long id) {

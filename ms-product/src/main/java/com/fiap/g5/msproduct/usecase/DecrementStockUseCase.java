@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class DecrementStockUseCase {
-
     private final ProductGateway productGateway;
 
     public Product execute(Long id, int quantity) {

@@ -10,7 +10,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FindAllProductsUseCase {
-
     private final ProductGateway productGateway;
 
     public List<Product> execute() {

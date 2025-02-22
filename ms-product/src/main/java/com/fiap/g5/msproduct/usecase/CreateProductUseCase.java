@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CreateProductUseCase {
-
     private final ProductGateway productGateway;
 
     public Product execute(Product product) {

@@ -25,10 +25,15 @@ public class BatchController {
         this.importProductJob = importProductJob;
     }
 
+    /** 
+     * @param file 
+     * @return
+     */
     @PostMapping(value = "/upload-csv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadCsv(@RequestParam("file") MultipartFile file) {
         try {
             Path tempFile = Files.createTempFile("products-", ".csv");
+
             Files.write(tempFile, file.getBytes());
 
             JobParameters jobParameters = new JobParametersBuilder()
@@ -38,11 +43,12 @@ public class BatchController {
 
             jobLauncher.run(importProductJob, jobParameters);
 
-            return ResponseEntity.ok("CSV uploaded and batch job started successfully!");
+            return ResponseEntity.ok("Upload realizado e batch iniciado com sucesso!");
+
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error processing CSV file: " + e.getMessage());
+                    .body("Erro ao processar arquivo CSV: " + e.getMessage());
         }
     }
 }
