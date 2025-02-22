@@ -1,7 +1,6 @@
 package com.fiap.g5.msproduct.config;
 
 import com.fiap.g5.msproduct.domain.Product;
-import com.fiap.g5.msproduct.repository.ProductRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -39,7 +38,6 @@ public class BatchConfig {
         reader.setLinesToSkip(1);
 
         DefaultLineMapper<Product> lineMapper = new DefaultLineMapper<>();
-
         DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
         tokenizer.setNames("name", "description", "price", "stock");
         lineMapper.setLineTokenizer(tokenizer);
@@ -55,13 +53,12 @@ public class BatchConfig {
 
     @Bean
     public ItemProcessor<Product, Product> productItemProcessor() {
-        return product -> {
-            return product;
-        };
+        return product -> product; // nenhum processamento adicional
     }
 
+    // Ajustamos para injetar o ProductRepository do pacote gateway.database.repository
     @Bean
-    public ItemWriter<Product> productItemWriter(ProductRepository productRepository) {
+    public ItemWriter<Product> productItemWriter(com.fiap.g5.msproduct.gateway.database.repository.ProductRepository productRepository) {
         return items -> productRepository.saveAll(items);
     }
 
@@ -90,5 +87,4 @@ public class BatchConfig {
                 .start(importProductStep)
                 .build();
     }
-
 }

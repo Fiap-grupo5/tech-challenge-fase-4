@@ -1,4 +1,4 @@
-package com.fiap.g5.msproduct.repository;
+package com.fiap.g5.msproduct.gateway.database.repository;
 
 import com.fiap.g5.msproduct.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
