@@ -22,11 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 @AllArgsConstructor
 public class OrderController {
-    // TODO: Inject the LogisticGateway in usecase (not here)
     @Autowired
     private LogisticGateway logisticGateway;
 
-    // TODO: Implement the createOrder method
     @PostMapping("/")
     public Order createOrder() {
         var order = new Order(
@@ -41,7 +39,6 @@ public class OrderController {
         return order;
     }
 
-    // TODO: Implement the getOrder method
     @GetMapping("/{id}")
     public Order findById(@PathVariable("id") Long id) {
         return new Order(
@@ -54,7 +51,6 @@ public class OrderController {
             );
     }
 
-    // Todo: Implement the updateStatus method
     @PostMapping("/{id}/status/{status}")
     public Order updateStatus(@PathVariable("id") Long id, @PathVariable("status") String status) {
         var order = new Order(
