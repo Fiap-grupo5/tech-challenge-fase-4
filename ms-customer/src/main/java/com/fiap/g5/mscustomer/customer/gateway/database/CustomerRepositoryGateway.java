@@ -25,12 +25,7 @@ public class CustomerRepositoryGateway implements CustomerGateway {
     public Optional<Customer> findById(Long id) {
         try {
             return customerRepository.findById(id).map(customerEntity -> new Customer(
-                customerEntity.getId(),
-                customerEntity.getName(),
-                customerEntity.getEmail(),
-                customerEntity.getPhone(),
-                customerEntity.getPostcode(),
-                customerEntity.getNumber()));
+            ));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 			throw new AcessoRepositorioDadosException();
@@ -49,7 +44,7 @@ public class CustomerRepositoryGateway implements CustomerGateway {
                 .number(customer.getNumber())
                 .build();
             CustomerEntity customerEntity = customerRepository.save(newCustomerEntity);
-            return new Customer(customerEntity.getId(), customerEntity.getName(), customerEntity.getEmail(), customerEntity.getPhone(), customerEntity.getPostcode(), customerEntity.getNumber());
+            return new Customer();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new AcessoRepositorioDadosException();
@@ -61,12 +56,7 @@ public class CustomerRepositoryGateway implements CustomerGateway {
         try {
             List<CustomerEntity> customerEntities = customerRepository.findAll();
             return customerEntities.stream().map(customerEntity -> new Customer(
-                customerEntity.getId(),
-                customerEntity.getName(),
-                customerEntity.getEmail(),
-                customerEntity.getPhone(),
-                customerEntity.getPostcode(),
-                customerEntity.getNumber())).toList();
+            )).toList();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new AcessoRepositorioDadosException();
@@ -93,7 +83,7 @@ public class CustomerRepositoryGateway implements CustomerGateway {
             customerEntity.setPostcode(customer.getPostcode());
             customerEntity.setNumber(customer.getNumber());
             CustomerEntity updatedCustomerEntity = customerRepository.save(customerEntity);
-            return new Customer(updatedCustomerEntity.getId(), updatedCustomerEntity.getName(), updatedCustomerEntity.getEmail(), updatedCustomerEntity.getPhone(), updatedCustomerEntity.getPostcode(), updatedCustomerEntity.getNumber());
+            return new Customer();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new AcessoRepositorioDadosException();

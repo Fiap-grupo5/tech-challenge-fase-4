@@ -1,12 +1,12 @@
 package com.fiap.g5.mscustomer.customer.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
+@Setter
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 public class Customer {
     private Long id;
     private String name;

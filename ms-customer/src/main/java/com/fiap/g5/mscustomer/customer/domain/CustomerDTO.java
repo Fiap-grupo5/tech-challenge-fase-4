@@ -13,4 +13,5 @@ public class CustomerDTO {
     private String phone;
     private String postcode;
     private Long number;
+
 }
