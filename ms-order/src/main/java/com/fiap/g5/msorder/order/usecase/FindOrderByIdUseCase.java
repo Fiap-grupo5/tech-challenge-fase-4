@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FindOrderByIdUseCase {
     private final OrderGateway orderGateway;
-
     public Order execute(Long orderId) {
         return orderGateway.findById(orderId)
                 .orElseThrow(OrderNotFoundException::new);

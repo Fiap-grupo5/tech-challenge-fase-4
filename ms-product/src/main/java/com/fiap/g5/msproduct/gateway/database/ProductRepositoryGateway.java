@@ -4,13 +4,11 @@ import com.fiap.g5.msproduct.domain.Product;
 import com.fiap.g5.msproduct.exception.DataRepositoryAccessException;
 import com.fiap.g5.msproduct.exception.ProductNotFoundException;
 import com.fiap.g5.msproduct.gateway.ProductGateway;
-import com.fiap.g5.msproduct.gateway.database.entity.ProductEntity;
 import com.fiap.g5.msproduct.gateway.database.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,10 +22,7 @@ public class ProductRepositoryGateway implements ProductGateway {
     @Override
     public List<Product> findAll() {
         try {
-            return productRepository.findAll()
-                    .stream()
-                    .map(this::toDomain)
-                    .toList();
+            return productRepository.findAll();
         } catch (Exception e) {
             log.error("Erro ao buscar todos os produtos", e);
             throw new DataRepositoryAccessException();
@@ -37,7 +32,7 @@ public class ProductRepositoryGateway implements ProductGateway {
     @Override
     public Optional<Product> findById(Long id) {
         try {
-            return productRepository.findById(id).map(this::toDomain);
+            return productRepository.findById(id);
         } catch (Exception e) {
             log.error("Erro ao buscar produto por id", e);
             throw new DataRepositoryAccessException();
@@ -47,11 +42,7 @@ public class ProductRepositoryGateway implements ProductGateway {
     @Override
     public Product create(Product product) {
         try {
-            ProductEntity entity = toEntity(product);
-            entity.setCreatedAt(LocalDateTime.now());
-            entity.setUpdatedAt(LocalDateTime.now());
-            ProductEntity saved = productRepository.save(entity);
-            return toDomain(saved);
+            return productRepository.save(product);
         } catch (Exception e) {
             log.error("Erro ao criar produto", e);
             throw new DataRepositoryAccessException();
@@ -61,17 +52,16 @@ public class ProductRepositoryGateway implements ProductGateway {
     @Override
     public Product update(Long id, Product product) {
         try {
-            ProductEntity existing = productRepository.findById(id)
+            Product existing = productRepository.findById(id)
                     .orElseThrow(ProductNotFoundException::new);
 
             existing.setName(product.getName());
             existing.setDescription(product.getDescription());
             existing.setPrice(product.getPrice());
             existing.setStock(product.getStock());
-            existing.setUpdatedAt(LocalDateTime.now());
 
-            ProductEntity updated = productRepository.save(existing);
-            return toDomain(updated);
+            return productRepository.save(existing);
+
         } catch (ProductNotFoundException e) {
             throw e;
         } catch (Exception e) {
@@ -93,17 +83,12 @@ public class ProductRepositoryGateway implements ProductGateway {
     @Override
     public Product incrementStock(Long id, int quantity) {
         try {
-            ProductEntity existing = productRepository.findById(id)
+            Product existing = productRepository.findById(id)
                     .orElseThrow(ProductNotFoundException::new);
 
-            if (existing.getStock() == null) {
-                existing.setStock(0);
-            }
-            existing.setStock(existing.getStock() + quantity);
-            existing.setUpdatedAt(LocalDateTime.now());
+            existing.incrementStock(quantity);
+            return productRepository.save(existing);
 
-            ProductEntity updated = productRepository.save(existing);
-            return toDomain(updated);
         } catch (ProductNotFoundException e) {
             throw e;
         } catch (Exception e) {
@@ -115,46 +100,17 @@ public class ProductRepositoryGateway implements ProductGateway {
     @Override
     public Product decrementStock(Long id, int quantity) {
         try {
-            ProductEntity existing = productRepository.findById(id)
+            Product existing = productRepository.findById(id)
                     .orElseThrow(ProductNotFoundException::new);
 
-            if (existing.getStock() == null) {
-                existing.setStock(0);
-            }
-            int newStock = existing.getStock() - quantity;
-            if (newStock < 0) {
-                throw new IllegalArgumentException("Stock cannot be negative");
-            }
-            existing.setStock(newStock);
-            existing.setUpdatedAt(LocalDateTime.now());
+            existing.decrementStock(quantity);
+            return productRepository.save(existing);
 
-            ProductEntity updated = productRepository.save(existing);
-            return toDomain(updated);
         } catch (ProductNotFoundException e) {
             throw e;
         } catch (Exception e) {
             log.error("Erro ao decrementar estoque", e);
             throw new DataRepositoryAccessException();
         }
-    }
-
-    private Product toDomain(ProductEntity entity) {
-        return new Product(
-                entity.getId(),
-                entity.getName(),
-                entity.getDescription(),
-                entity.getPrice(),
-                entity.getStock()
-        );
-    }
-
-    private ProductEntity toEntity(Product product) {
-        return ProductEntity.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .stock(product.getStock())
-                .build();
     }
 }

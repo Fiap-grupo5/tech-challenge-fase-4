@@ -1,13 +1,12 @@
 package com.fiap.g5.msorder.order.domain;
 
+import lombok.*;
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
-
 @Getter
+@Setter
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
 public class Logistic {
     private Long id;

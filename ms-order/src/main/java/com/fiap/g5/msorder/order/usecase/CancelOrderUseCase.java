@@ -16,7 +16,7 @@ public class CancelOrderUseCase {
 
     private final OrderGateway orderGateway;
     private final FindOrderByIdUseCase findOrderByIdUseCase;
-    private final ProdutoGateway produtoGateway; 
+    private final ProdutoGateway produtoGateway;
 
     public Order execute(Long orderId) {
         log.info("Cancelando pedido com ID {}", orderId);
@@ -24,13 +24,12 @@ public class CancelOrderUseCase {
         if (existing.getStatus() == OrderStatus.CANCELED) {
             return existing;
         }
-
+        // Ao cancelar, você pode, por exemplo, devolver o estoque:
         existing.getItems().forEach(item -> {
             produtoGateway.incrementarEstoque(item.getProductId(), item.getQuantity());
         });
         existing.setStatus(OrderStatus.CANCELED);
         existing.setUpdatedAt(LocalDateTime.now());
-
         return orderGateway.update(orderId, existing);
     }
 }

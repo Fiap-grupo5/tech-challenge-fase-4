@@ -1,10 +1,11 @@
 version: "3.8"
+
 services:
   mysql:
     image: mysql:8.0
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: fase4
     ports:
       - "3306:3306"
     volumes:
@@ -17,47 +18,58 @@ services:
       timeout: 5s
       retries: 5
 
-  ms-customer:
-    build: ./ms-customer
-    container_name: ms-customer
+  ms-discovery:
+    build: ./ms-discovery
+    container_name: ms-discovery
     ports:
-      - "8081:8080"
+      - "8761:8761"
+    networks:
+      - tech-network
     depends_on:
       mysql:
         condition: service_healthy
+
+  ms-customer:
+    build: ./ms-customer
+    container_name: ms-customer
+    depends_on:
+      mysql:
+        condition: service_healthy
+      ms-discovery:
+        condition: service_started
     networks:
       - tech-network
 
   ms-product:
     build: ./ms-product
     container_name: ms-product
-    ports:
-      - "8082:8080"
     depends_on:
       mysql:
         condition: service_healthy
+      ms-discovery:
+        condition: service_started
     networks:
       - tech-network
 
   ms-order:
     build: ./ms-order
     container_name: ms-order
-    ports:
-      - "8083:8080"
     depends_on:
       mysql:
         condition: service_healthy
+      ms-discovery:
+        condition: service_started
     networks:
       - tech-network
 
   ms-logistic:
     build: ./ms-logistic
     container_name: ms-logistic
-    ports:
-      - "8084:8080"
     depends_on:
       mysql:
         condition: service_healthy
+      ms-discovery:
+        condition: service_started
     networks:
       - tech-network
 
@@ -74,6 +86,8 @@ services:
       ms-order:
         condition: service_started
       ms-logistic:
+        condition: service_started
+      ms-discovery:
         condition: service_started
     networks:
       - tech-network

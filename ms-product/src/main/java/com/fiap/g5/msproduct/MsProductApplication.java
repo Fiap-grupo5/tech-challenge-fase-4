@@ -1,22 +1,20 @@
 package com.fiap.g5.msproduct;
 
-import java.util.Locale;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 
+import java.util.Locale;
 
-@EnableDiscoveryClient 
-@EnableBatchProcessing  
-@SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class })
-public class MsCustomerApplication {
+@EnableDiscoveryClient
+@EnableBatchProcessing
+@SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class})
+public class MsProductApplication {
 
     public static void main(String[] args) {
-        Locale.setDefault(new Locale( "pt", "BR" ));
-        SpringApplication.run(MsCustomerApplication.class, args);
+        Locale.setDefault(Locale.of("pt", "BR"));
+        SpringApplication.run(MsProductApplication.class, args);
     }
-
 }

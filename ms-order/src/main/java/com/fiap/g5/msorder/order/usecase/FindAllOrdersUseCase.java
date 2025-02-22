@@ -10,7 +10,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FindAllOrdersUseCase {
     private final OrderGateway orderGateway;
-
     public List<Order> execute() {
         return orderGateway.findAll();
     }

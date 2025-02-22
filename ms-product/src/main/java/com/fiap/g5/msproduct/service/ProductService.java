@@ -1,8 +1,7 @@
 package com.fiap.g5.msproduct.service;
 
 import com.fiap.g5.msproduct.domain.Product;
-import com.fiap.g5.msproduct.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fiap.g5.msproduct.gateway.ProductGateway;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -10,49 +9,37 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductGateway productGateway;
+
+    public ProductService(ProductGateway productGateway) {
+        this.productGateway = productGateway;
+    }
 
     public List<Product> findAll() {
-        return productRepository.findAll();
+        return productGateway.findAll();
     }
 
     public Optional<Product> findById(Long id) {
-        return productRepository.findById(id);
+        return productGateway.findById(id);
     }
 
     public Product create(Product product) {
-        return productRepository.save(product);
+        return productGateway.create(product);
     }
 
     public Product update(Long id, Product updatedProduct) {
-        return productRepository.findById(id).map(product -> {
-            product.setName(updatedProduct.getName());
-            product.setDescription(updatedProduct.getDescription());
-            product.setPrice(updatedProduct.getPrice());
-            product.setStock(updatedProduct.getStock());
-
-            return productRepository.save(product);
-        }).orElseThrow(() -> new RuntimeException("Product not found"));
+        return productGateway.update(id, updatedProduct);
     }
 
     public void delete(Long id) {
-        productRepository.deleteById(id);
+        productGateway.delete(id);
     }
 
     public Product incrementStock(Long id, int quantity) {
-        return productRepository.findById(id).map(product -> {
-            product.incrementStock(quantity);
-            return productRepository.save(product);
-        }).orElseThrow(() -> new RuntimeException("Product not found"));
+        return productGateway.incrementStock(id, quantity);
     }
 
     public Product decrementStock(Long id, int quantity) {
-        return productRepository.findById(id).map(product -> {
-            product.decrementStock(quantity);
-            return productRepository.save(product);
-        }).orElseThrow(() -> new RuntimeException("Product not found"));
+        return productGateway.decrementStock(id, quantity);
     }
-
 }
-

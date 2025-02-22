@@ -1,4 +1,3 @@
-// gateway/database/entity/ProductEntity.java
 package com.fiap.g5.msproduct.gateway.database.entity;
 
 import jakarta.persistence.*;

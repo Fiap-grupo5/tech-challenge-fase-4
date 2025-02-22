@@ -17,12 +17,14 @@ public class CreateOrderUseCase {
 
     private final OrderGateway orderGateway;
     private final ProdutoGateway produtoGateway;
+
     public Order execute(Order order) {
         log.info("Criando novo pedido: {}", order);
         order.setStatus(OrderStatus.PENDING);
         order.setCreatedAt(LocalDateTime.now());
         order.setUpdatedAt(LocalDateTime.now());
 
+        // Para cada item, decrementar estoque
         for (OrderItem item : order.getItems()) {
             produtoGateway.decrementarEstoque(item.getProductId(), item.getQuantity());
         }

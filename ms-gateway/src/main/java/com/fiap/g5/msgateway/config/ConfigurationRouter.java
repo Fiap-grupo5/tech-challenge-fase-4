@@ -11,8 +11,8 @@ public class ConfigurationRouter {
     @Bean
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
-            // .route("customer-service-route", r -> r.path("/customer-service/**").uri("lb://MS-CUSTOMER"))
-            // .route("product-service-route", r -> r.path("/product-service/**").uri("lb://MS-PRODUCT"))
+            .route("customer-service-route", r -> r.path("/customer-service/**").uri("lb://MS-CUSTOMER"))
+            .route("product-service-route", r -> r.path("/product-service/**").uri("lb://MS-PRODUCT"))
             .route("order-service-route", r -> r.path("/order-service/**").uri("lb://MS-ORDER"))
             .route("logistic-service-route", r -> r.path("/logistic-service/**").uri("lb://MS-LOGISTIC"))
             .build();
